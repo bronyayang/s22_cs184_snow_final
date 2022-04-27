@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>W3.CSS Template</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+</head>
+<body>
+
+<!-- Navbar (sit on top) -->
+<div class="w3-top">
+  <div class="w3-bar w3-white w3-wide w3-padding w3-card">
+
+    <!-- Float links to the right. Hide them on small screens -->
+    <div class="w3-right w3-hide-small">
+      <a href="#projects" class="w3-bar-item w3-button">Project</a>
+      <a href="#results" class="w3-bar-item w3-button">Results</a>
+      <a href="#reflection" class="w3-bar-item w3-button">Reflection</a>
+      <a href="#plan" class="w3-bar-item w3-button">Plan</a>
+      <a href="#team" class="w3-bar-item w3-button">Team</a>
+    </div>
+  </div>
+</div>
+
+<!-- Header -->
+<header class="w3-display-container w3-content w3-wide" style="max-width:1500px;">
+  <img class="w3-image" src="images/title.png"  width="1500" height="400">
+  <div class="w3-display-middle w3-margin-top w3-center">
+    <h1 class="w3-xxlarge w3-text-white"><span class="w3-padding w3-black w3-opacity-min"><b>CS 184 Final Project</b></h1>
+    <h1 class="w3-xxlarge w3-text-white"><span class="w3-padding w3-black w3-opacity-min"><b>Snow Simulation</b></h1>
+  </div>
+</header>
+
+<!-- Page content -->
+<div class="w3-content w3-padding" style="max-width:1564px">
+
+  <!-- Project Section -->
+  <div class="w3-container w3-padding-32" id="projects">
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Project</h3>
+
+
+  <p>Snow simulation has been a challenging task in the field of computer graphics. Due to its special properties involving both solid snow and water, rendered results from
+      the existing methods still contains visual artifacts. For example, as shown in Figure 1, the compression of snow on the road is largly ignored by the algorithm.
+      In this project, we implement material point method (MPM) for snow simulation using taichi programming language [2]. Besides reimplement the snow simulation algorithm,
+      we show that the snow compression issue during object interactions can be allivated.
+  </p>
+  <div align="center">
+    <table style="width=100%">
+        <tr>
+            <td align="middle">
+                <img src="images/snowplow.png" width="500px" />
+                <figcaption align="middle">Figure 1.</figcaption>
+        </tr>
+    </table>
+</div>
+</div>
+
+
+  <!-- Results Section -->
+  <div class="w3-container w3-padding-32" id="results">
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Results</h3>
+    <p>In this Section, we mainly report our current progress and results. Since we aim for reimplementing a comprehensive snow simulation which includes 2D and 3D snow simulation, we first takle the 2D problem.</p>
+
+    <p>In the begining of the simulation, we initalize the position of particles to form the desired shape. For example, we </p>
+
+    <p>We present the progress and results in the from of presentation video, and slide is linked here.</p>
+  </div>
+
+    <!-- Reflection Section -->
+    <div class="w3-container w3-padding-32" id="reflection">
+        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Reflection</h3>
+        <p>Reflection</p>
+      </div>
+
+    <!-- Plan Section -->
+    <div class="w3-container w3-padding-32" id="plan">
+        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Plan</h3>
+        <div>
+          <input type="checkbox" id="1" name="plan" value="1">
+          <label for="coding">4/27: Solve 2D particles repulsion problem</label>
+        </div>
+        <div>
+            <input type="checkbox" id="2" name="plan" value="2">
+            <label for="coding">4/28: Finish 2D snow simulation and start 3D snow simulation</label>
+          </div>
+          <div>
+            <input type="checkbox" id="3" name="plan" value="3">
+            <label for="coding">5/5: Finish 3D snow simulation and start solving the compression issue</label>
+          </div>
+          <div>
+            <input type="checkbox" id="4" name="plan" value="4">
+            <label for="coding">5/11: Finish solving compression issue and final deliverables.</label>
+          </div>
+      </div>
+
+  <!-- Team Section -->
+  <div class="w3-container w3-padding-32" id="team">
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Team</h3>
+    <div class="w3-col l3 m6 w3-margin-bottom">
+        <img src="images/person.png" style="width:60%">
+        <h3>Carl Gan</h3>
+        <p class="w3-opacity">ganqx2001 at berkeley</p>
+        <p>This is a place holder for contribution.</p>
+      </div>
+      <div class="w3-col l3 m6 w3-margin-bottom">
+        <img src="images/person.png" alt="Jane" style="width:60%">
+        <h3>Yijun Li</h3>
+        <p class="w3-opacity">liyijun at berkeley</p>
+        <p>This is a place holder for contribution.</p>
+      </div>
+      <div class="w3-col l3 m6 w3-margin-bottom">
+        <img src="images/person.png" alt="Mike" style="width:60%">
+        <h3>Ruomu Xu</h3>
+        <p class="w3-opacity">xuyimo at berkeley</p>
+        <p>This is a place holder for contribution.</p>
+      </div>
+      <div class="w3-col l3 m6 w3-margin-bottom">
+        <img src="images/person.png" alt="Dan" style="width:60%">
+        <h3>Shijia Yang</h3>
+        <p class="w3-opacity">shijiayang at berkeley</p>
+        <p>This is a place holder for contribution.</p>
+      </div>
+  </div>
+  
+<!-- Reference -->
+<div class="w3-content w3-padding" style="max-width:1564px">
+
+    <!-- Project Section -->
+    <div class="w3-container w3-padding-32" id="ref">
+      <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">References</h3>
+  
+  
+    <p>[1] Stomakhin, Alexey, et al. "A material point method for snow simulation." ACM Transactions on Graphics (TOG) 32.4 (2013): 1-10. </p>
+    
+    <p>[2] Hu, Yuanming, et al. "Taichi: a language for high-performance computation on spatially sparse data structures." ACM Transactions on Graphics (TOG) 38.6 (2019): 1-16.
+    </p>
+  </div>
+<!-- End page content -->
+</div>
+
+
+<!-- Footer -->
+<footer class="w3-center w3-black w3-padding-16">
+  <p>Powered by <a href="https://www.w3schools.com/w3css/default.asp" title="W3.CSS" target="_blank" class="w3-hover-text-green">w3.css</a></p>
+</footer>
+
+</body>
+</html>
