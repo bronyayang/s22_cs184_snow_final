@@ -42,7 +42,7 @@
 
   <p>Snow simulation has been a challenging task in the field of computer graphics. Due to its special properties involving both solid snow and water, rendered results from
       the existing methods still contains visual artifacts. For example, as shown in Figure 1, the compression of snow on the road is largly ignored by the algorithm.
-      In this project, we implement material point method (MPM) for snow simulation using taichi programming language [2]. Besides reimplement the snow simulation algorithm,
+      In this project, we implement material point method (MPM) [1] for snow simulation using taichi programming language [2]. Besides reimplement the snow simulation algorithm,
       we show that the snow compression issue during object interactions can be allivated.
   </p>
   <div align="center">
@@ -112,6 +112,7 @@
         </table>
     </div>
 
+
     <p>After the following progress, we get the following simulation:</p>
 
     <div align="center">
@@ -140,7 +141,46 @@
         </table>
     </div>
 
-    <p>We present the progress and results in the from of presentation video, and slide is linked here.</p>
+    <p>The following videos show case our 2D snow simulation with different shape of snow, forces applied to the snow, and different stiffness of the snow.</p>
+
+    <p>The first video is two snow balls hitting on each other. The constructed shapes are two circles instead of squares in the example above.
+        We also increase the hardening coefficient to simulate that snow gets harder when compressed.
+        Therefore when two balls collapse, the snow particles are relatively stuck together compared to the above example in which we did not increase the hardening coefficients. Notice that the particles from one ball will stick to another ball, due to the stickiness property of the snow.
+         </p>
+    <div align="center">
+    <video width="640" height="480" controls>
+        <source src="videos/hedgefund.mp4">
+      </video>
+    </div>
+
+    <p>The hardening coefficient is the force between snow particles. If we increase the force the particles will be closer and then become stiffer visually. The formula for the hardening coefficient is shown below:</p>
+
+    <div align="center">
+        <table style="width=100%">
+            <tr>
+                <td align="middle">
+                    <img src="images/formula3.png" width="400px" />
+                    <figcaption align="middle">Formula 3.</figcaption>
+            </tr>
+        </table>
+    </div>
+
+<p> For the second video, it shows three snowballs hitting the wall. We apply three equally horizontal forces to each of them. The top small ball has the smallest hardening coefficient and the coefficient increase for the two snowballs below. Therefore the top snowball breaks up more compared to the two below.</p>
+    <div align="center">
+        <video width="640" height="480" controls>
+            <source src="videos/shotput.mp4">
+          </video>
+        </div>
+
+        <p>For the third video, it demonstrates the situation of snowfall. Notice that the yellow snowball with a large hardening coefficient will go through the other snow particles. 
+        </p>
+        <div align="center">
+            <video width="640" height="480" controls>
+                <source src="videos/snowfall.mp4">
+              </video>
+            </div>
+
+    <p>We present the progress and results in the from of presentation video, and slide is linked <a href="https://docs.google.com/presentation/d/1PL3OzJ4rJ_ZjZoiejAVRxySBABlyG_HUe8w8ng1Tzow/edit?usp=sharing">here</a>.</p>
   </div>
 
     <!-- Reflection Section -->
@@ -149,7 +189,9 @@
         <p>For the milestone, we familiar with taichi language. We also implement the 2D snow simulation based on MPM. 
             In the simulation, the individual particles are able to fall off snow-like.</p>
         <p>Before we move on to the 3D simulation of snow, we need to solve several problems. 
-            Although we take in account of elastic and plasticity of snow, we are treating snow particles visually quite similar as sand particles.</p>
+            Although we take in account of elastic and plasticity of snow, we are treating snow particles visually quite similar as sand particles.
+        No matter how hard is the snowball, it should always break apart when hitting the wall/ground. However, the above videos do not show the desired behavior.</p>
+            <p>The second problem is that in the second video, the snowballs should stick to the wall and then slide down. However, the snowballs hit the wall and then bounce back to the ground.</p>
             <p>Also, the current simulation has problem of repulsive particles. Specifically, when all the particles fall on the ground, they will start to repell each other, making them spaced evenly in the end and change the overall shape of the snow on the land.
                 Figure 4 shows the described problem.
             </p>
@@ -165,12 +207,14 @@
             </div>
       </div>
 
+      <p>We are planning on solving these problems in the following days.</p>
+
     <!-- Plan Section -->
     <div class="w3-container w3-padding-32" id="plan">
         <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Plan</h3>
         <div>
           <input type="checkbox" id="1" name="plan" value="1">
-          <label for="coding">4/27: Solve 2D particles repulsion problem</label>
+          <label for="coding">4/27: Solve 2D particles repulsion, stickiness problem</label>
         </div>
         <div>
             <input type="checkbox" id="2" name="plan" value="2">
