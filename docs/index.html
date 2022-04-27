@@ -50,7 +50,7 @@
         <tr>
             <td align="middle">
                 <img src="images/snowplow.png" width="500px" />
-                <figcaption align="middle">Figure 1.</figcaption>
+                <figcaption align="middle">Figure 1. There is no snow on the road which is not realistic.</figcaption>
         </tr>
     </table>
 </div>
@@ -62,7 +62,83 @@
     <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Results</h3>
     <p>In this Section, we mainly report our current progress and results. Since we aim for reimplementing a comprehensive snow simulation which includes 2D and 3D snow simulation, we first takle the 2D problem.</p>
 
-    <p>In the begining of the simulation, we initalize the position of particles to form the desired shape. For example, we </p>
+    <p>In the begining of the simulation, we initalize the position of particles to form the desired shape. For example, we create 3 squares in different position as in Figure 2. We then initialize particle velocity to 0, deformation gradient to 2D identity matrix, plastic deformation to 1, affine velocity field to 0 matrix.</p>
+    <div align="center">
+        <table style="width=100%">
+            <tr>
+                <td align="middle">
+                    <img src="images/figure2.png" width="500px" />
+                    <figcaption align="middle">Figure 2. Snow particles initial positions.</figcaption>
+            </tr>
+        </table>
+    </div>
+
+    <p>For each of the 20000 frames, we repeat the following steps:</p>
+
+    <ol type="1">
+        <li>Update deformation gradient(F) according to Formula 1.</li>
+        <li>Reconstruct deformation gradient to take account of plasticity of snow.</li>
+        <li>Particles to grid conversion.</li>
+        <li>Use Euler method to calculate acceleration and velocity for each particles. For velocity, momentum and gravity are considered.</li>
+        <li>Grid to particles conversion.</li>
+        <li>Update velocity and position for each particle according to Formula 2.</li>
+      </ol>
+
+      <div align="center">
+        <table style="width=100%">
+            <tr>
+                <td align="middle">
+                    <img src="images/formula1.png" width="200px" />
+                    <figcaption align="middle">Formula 1. Deformation gradient update.</figcaption>
+            </tr>
+        </table>
+    </div>
+
+    <div align="center">
+        <table style="width=100%">
+            <tr>
+                <td align="middle">
+                    <img src="images/formula2.png" width="250px" />
+            </tr>
+        </table>
+    </div>
+    <div align="center">
+        <table style="width=100%">
+            <tr>
+                <td align="middle">
+                    <img src="images/formula2_1.png" width="190px" />
+                    <figcaption align="middle">Formula 2. Velocity and position update rule.</figcaption>
+            </tr>
+        </table>
+    </div>
+
+    <p>After the following progress, we get the following simulation:</p>
+
+    <div align="center">
+        <table style="width=100%">
+            <tr>
+                <td align="middle">
+                    <img src="images/show1.png" width="500px" />
+            </tr>
+        </table>
+    </div>
+    <div align="center">
+        <table style="width=100%">
+            <tr>
+                <td align="middle">
+                    <img src="images/show2.png" width="500px" />
+            </tr>
+        </table>
+    </div>
+    <div align="center">
+        <table style="width=100%">
+            <tr>
+                <td align="middle">
+                    <img src="images/show3.png" width="500px" />
+                    <figcaption align="middle">Figure 3. Snow simulation.</figcaption>
+            </tr>
+        </table>
+    </div>
 
     <p>We present the progress and results in the from of presentation video, and slide is linked here.</p>
   </div>
@@ -70,7 +146,23 @@
     <!-- Reflection Section -->
     <div class="w3-container w3-padding-32" id="reflection">
         <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Reflection</h3>
-        <p>Reflection</p>
+        <p>For the milestone, we familiar with taichi language. We also implement the 2D snow simulation based on MPM. 
+            In the simulation, the individual particles are able to fall off snow-like.</p>
+        <p>Before we move on to the 3D simulation of snow, we need to solve several problems. 
+            Although we take in account of elastic and plasticity of snow, we are treating snow particles visually quite similar as sand particles.</p>
+            <p>Also, the current simulation has problem of repulsive particles. Specifically, when all the particles fall on the ground, they will start to repell each other, making them spaced evenly in the end and change the overall shape of the snow on the land.
+                Figure 4 shows the described problem.
+            </p>
+
+            <div align="center">
+                <table style="width=100%">
+                    <tr>
+                        <td align="middle">
+                            <img src="images/problem1.png" width="500px" />
+                            <figcaption align="middle">Figure 4. Limitation of the current stage.</figcaption>
+                    </tr>
+                </table>
+            </div>
       </div>
 
     <!-- Plan Section -->
@@ -90,7 +182,7 @@
           </div>
           <div>
             <input type="checkbox" id="4" name="plan" value="4">
-            <label for="coding">5/11: Finish solving compression issue and final deliverables.</label>
+            <label for="coding">5/11: Finish solving compression issue and final deliverables</label>
           </div>
       </div>
 
