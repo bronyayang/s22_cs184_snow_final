@@ -14,10 +14,11 @@
 
     <!-- Float links to the right. Hide them on small screens -->
     <div class="w3-right w3-hide-small">
-      <a href="#projects" class="w3-bar-item w3-button">Project</a>
-      <a href="#results" class="w3-bar-item w3-button">Results</a>
+      <a href="#abs" class="w3-bar-item w3-button">Abstract</a>
+      <a href="#tech" class="w3-bar-item w3-button">Tech</a>
       <a href="#reflection" class="w3-bar-item w3-button">Reflection</a>
-      <a href="#plan" class="w3-bar-item w3-button">Plan</a>
+      <a href="#results" class="w3-bar-item w3-button">Results</a>
+      <a href="#ref" class="w3-bar-item w3-button">Refs</a>
       <a href="#team" class="w3-bar-item w3-button">Team</a>
     </div>
   </div>
@@ -36,8 +37,8 @@
 <div class="w3-content w3-padding" style="max-width:1564px">
 
   <!-- Project Section -->
-  <div class="w3-container w3-padding-32" id="projects">
-    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Project</h3>
+  <div class="w3-container w3-padding-32" id="abs">
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Abstract</h3>
 
 
   <p>Snow simulation has been a challenging task in the field of computer graphics. Due to its special properties involving both solid snow and water, rendered results from
@@ -55,6 +56,38 @@
     </table>
 </div>
 </div>
+
+  <!-- Tech Section -->
+  <div class="w3-container w3-padding-32" id="tech">
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Technical Approach</h3>
+
+</div>
+
+    <!-- Reflection Section -->
+    <div class="w3-container w3-padding-32" id="reflection">
+      <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Reflection</h3>
+      <p>For the milestone, we familiar with taichi language. We also implement the 2D snow simulation based on MPM. 
+          In the simulation, the individual particles are able to fall off snow-like.</p>
+      <p>Before we move on to the 3D simulation of snow, we need to solve several problems. 
+          Although we take in account of elastic and plasticity of snow, we are treating snow particles visually quite similar as sand particles.
+      No matter how hard is the snowball, it should always break apart when hitting the wall/ground. However, the above videos do not show the desired behavior.</p>
+          <p>The second problem is that in the second video, the snowballs should stick to the wall and then slide down. However, the snowballs hit the wall and then bounce back to the ground.</p>
+          <p>Also, the current simulation has problem of repulsive particles. Specifically, when all the particles fall on the ground, they will start to repell each other, making them spaced evenly in the end and change the overall shape of the snow on the land.
+              Figure 4 shows the described problem.
+          </p>
+
+          <div align="center">
+              <table style="width=100%">
+                  <tr>
+                      <td align="middle">
+                          <img src="images/problem1.png" width="500px" />
+                          <figcaption align="middle">Figure 4. Limitation of the current stage.</figcaption>
+                  </tr>
+              </table>
+          </div>
+    </div>
+
+    <p>We are planning on solving these problems in the following days.</p>
 
 
   <!-- Results Section -->
@@ -188,52 +221,17 @@ src="https://www.youtube.com/embed/Ada4gU-iL3M">
 </div>
   </div>
 
-    <!-- Reflection Section -->
-    <div class="w3-container w3-padding-32" id="reflection">
-        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Reflection</h3>
-        <p>For the milestone, we familiar with taichi language. We also implement the 2D snow simulation based on MPM. 
-            In the simulation, the individual particles are able to fall off snow-like.</p>
-        <p>Before we move on to the 3D simulation of snow, we need to solve several problems. 
-            Although we take in account of elastic and plasticity of snow, we are treating snow particles visually quite similar as sand particles.
-        No matter how hard is the snowball, it should always break apart when hitting the wall/ground. However, the above videos do not show the desired behavior.</p>
-            <p>The second problem is that in the second video, the snowballs should stick to the wall and then slide down. However, the snowballs hit the wall and then bounce back to the ground.</p>
-            <p>Also, the current simulation has problem of repulsive particles. Specifically, when all the particles fall on the ground, they will start to repell each other, making them spaced evenly in the end and change the overall shape of the snow on the land.
-                Figure 4 shows the described problem.
-            </p>
 
-            <div align="center">
-                <table style="width=100%">
-                    <tr>
-                        <td align="middle">
-                            <img src="images/problem1.png" width="500px" />
-                            <figcaption align="middle">Figure 4. Limitation of the current stage.</figcaption>
-                    </tr>
-                </table>
-            </div>
-      </div>
+<!-- Reference -->
+  <div class="w3-container w3-padding-32" id="ref">
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">References</h3>
 
-      <p>We are planning on solving these problems in the following days.</p>
+  <p>[1] Stomakhin, Alexey, et al. "A material point method for snow simulation." ACM Transactions on Graphics (TOG) 32.4 (2013): 1-10. </p>
+  
+  <p>[2] Hu, Yuanming, et al. "Taichi: a language for high-performance computation on spatially sparse data structures." ACM Transactions on Graphics (TOG) 38.6 (2019): 1-16.
+  </p>
+</div>
 
-    <!-- Plan Section -->
-    <div class="w3-container w3-padding-32" id="plan">
-        <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Plan</h3>
-        <div>
-          <input type="checkbox" id="1" name="plan" value="1">
-          <label for="coding">4/27: Solve 2D particles repulsion, stickiness problem</label>
-        </div>
-        <div>
-            <input type="checkbox" id="2" name="plan" value="2">
-            <label for="coding">4/28: Finish 2D snow simulation and start 3D snow simulation</label>
-          </div>
-          <div>
-            <input type="checkbox" id="3" name="plan" value="3">
-            <label for="coding">5/5: Finish 3D snow simulation and start solving the compression issue</label>
-          </div>
-          <div>
-            <input type="checkbox" id="4" name="plan" value="4">
-            <label for="coding">5/11: Finish solving compression issue and final deliverables</label>
-          </div>
-      </div>
 
   <!-- Team Section -->
   <div class="w3-container w3-padding-32" id="team">
@@ -264,20 +262,7 @@ src="https://www.youtube.com/embed/Ada4gU-iL3M">
       </div>
   </div>
   
-<!-- Reference -->
-<div class="w3-content w3-padding" style="max-width:1564px">
 
-    <!-- Project Section -->
-    <div class="w3-container w3-padding-32" id="ref">
-      <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">References</h3>
-  
-  
-    <p>[1] Stomakhin, Alexey, et al. "A material point method for snow simulation." ACM Transactions on Graphics (TOG) 32.4 (2013): 1-10. </p>
-    
-    <p>[2] Hu, Yuanming, et al. "Taichi: a language for high-performance computation on spatially sparse data structures." ACM Transactions on Graphics (TOG) 38.6 (2019): 1-16.
-    </p>
-  </div>
-<!-- End page content -->
 </div>
 
 
