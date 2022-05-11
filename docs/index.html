@@ -244,6 +244,21 @@ type="text/javascript"></script>
 
       <p>In this section, we describe the problems encountered and solution.</p>
 
+      <p>During implementing the 2D snow simulation, when overall physical simulation is not implemented correctly, the particles will disappear for the substep. The solution is to check the implementation with paper again and again. It was really helpful to write down the algorithm on a paper, since the original paper is hard to follow.
+      </p>
+
+      <P>After finishing 2D simulation, we found that, after snow particles falls onto the ground, they will adjust the position. As time goes on, the particles will become evenly positioned, which is super unrealistic. We plan to solve this completely. However, we cannot find a solution to remove this effect because this is caused by the original physical simulation formula. Therefore, as mentioned in the technical report section, we reduce the simulation step.
+        Since this effect will only occur in the late stage of simulation step, reducing the simulation step will not allow particles to move much.
+      </P>
+
+      <p>During the implementation of 3D version, we found that the particles look like boiling water. Specifically, the particles will not rest when hitting the gound. They keep jummping, colliding on each other, and never ends. I thought it was I forgot to implement neighboring particle collision. After checking, I found that I forgot to initialize velocity and deformation gradient properly.
+        After adding the initialization, the snow landed as desired. Therefore, proper initialization is critical.  Without it, the simulation is not snow, but some knid of bug art. I still found the simulation interesting with this jummping bug.
+      </p>
+
+      <p>The most valuable lesson learned for us is to use Taichi language. This language is super useful for physical simulation. 
+        Besides snow, Taichi is able to simulate smoke, water, jelly, sand without writing much code.
+      </p>
+
     </div>
 
 
