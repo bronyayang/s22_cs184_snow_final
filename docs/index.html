@@ -5,6 +5,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+<script
+src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js"
+type="text/javascript"></script>
 </head>
 <body>
 
@@ -98,7 +101,7 @@
     <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Technical Approach</h3>
 
     <p>We first initialize desired number of particles. For each particles, we initialize position as x, velocity as v, deformation gradient as F, and affine velocity field as C.
-      Deformation gradient [explain term mentioned]. For initial state, x can be random position, and v has to be 0 vector. Deformation gradient should be identity matrix, and C should be zero matrix.
+      Deformation gradient essentially is the alternation of the configuration of each particle after the deformation process given a certain configuration [1]:3. Mathematically, if we define deformation to be <span class="math inline">\(x = \phi(X) \)</span> where <span class="math inline">\(X\)</span> is the undeformed configuration, then the gradient is defined as <span class="math inline">\(\frac{\partial\theta}{\partial X}\)</span>. For initial state, x can be random position, and v has to be 0 vector. Deformation gradient should be identity matrix, and C should be zero matrix.
       If the initail parameters is not set as mentioned. The particles will not fall down like snow and will jump restlessly. For 2D simulation, x and v are 2 elements ti.Vector. F and C are 2x2 ti.Matrix. 
       For 3D simulation, we simply change 2D vectors to 3D and 2x2 matrices to 3x3. The below images show the one of the possible initial positions and states for simulation.
     </p>
@@ -166,7 +169,8 @@
       <tr>
           <td align="middle">
               <img src="images/4_1.png" width="400px" />
-              <figcaption align="middle">Figure 4.1. Large h.</figcaption>
+              <figcaption align="middle">Figure 4.1. Large <span class="math inline">\(\theta_c\)</span>.
+              </figcaption>
       </tr>
   </table>
 </div>
@@ -176,7 +180,7 @@
       <tr>
           <td align="middle">
               <img src="images/4_2.png" width="400px" />
-              <figcaption align="middle">Figure 4.2. Small h.</figcaption>
+              <figcaption align="middle">Figure 4.2. Large <span class="math inline">\(\theta_s\)</span>.</figcaption>
       </tr>
   </table>
 </div>
@@ -247,8 +251,32 @@
   <!-- Results Section -->
   <div class="w3-container w3-padding-32" id="results">
     <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Results</h3>
-
     <p>The following videos showcase our 2D snow simulation with different shape of snow, forces applied to the snow, and different stiffness of the snow.</p>
+
+    <p>This video shows a block of snow hitting an invisible wedge and a "block-esque" object fells onto the snow, further compressing them. Notice that there is friction on the ground so snow will gradually halt. We did not succeed in implementing rigid body, and the block is implemented with densely distributed particles set to be hard.</p>
+
+    <div id="youtube" style="text-align:center;">
+      <iframe src="https://www.youtube.com/embed/if_fQJGKsg8" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+    <p>This video shows a block of snow hitting a sticky wall, then another block of snow hit the previous block of snow that is still sticking on the wall.</p>
+
+    <div id="youtube" style="text-align:center;">
+      <iframe src="https://www.youtube.com/embed/6nIj464V4rs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+    <p>This video serves as the proof-of-concept for 3D snow simulation.</p>
+    <div id="youtube" style="text-align:center;">
+      <iframe src="https://www.youtube.com/embed/kC-nu_LhCK0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+    <p>You can find our final presentation slides <a href="https://docs.google.com/presentation/d/1JvxltEItARznptYVrxv13rOHqhymzEcKwU2N8TZlJfM/edit?usp=sharing">here</a> and presentation video below.</p>
+    <div id="youtube" style="text-align:center;">
+      <iframe src="https://www.youtube.com/embed/ee1jhw5ERXQ" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+
+    <p>PRE-MILESTONE VIDEOS BELOW</p>
 
     <p>The first video is two snow balls hitting on each other. The constructed shapes are two circles.
         We increase the hardening coefficient to simulate that snow gets harder when compressed.
@@ -276,7 +304,7 @@
               </video>
             </div>
 
-    <p>We present the progress and results in the from of presentation video, and slide is linked <a href="https://docs.google.com/presentation/d/1PL3OzJ4rJ_ZjZoiejAVRxySBABlyG_HUe8w8ng1Tzow/edit?usp=sharing">here</a>.</p>
+    <p>For archive purpose, milestone presentation is available <a href="https://docs.google.com/presentation/d/1PL3OzJ4rJ_ZjZoiejAVRxySBABlyG_HUe8w8ng1Tzow/edit?usp=sharing">here</a>.</p>
     <div align="center">
     <iframe width="840" height="630"
 src="https://www.youtube.com/embed/Ada4gU-iL3M">
@@ -292,6 +320,8 @@ src="https://www.youtube.com/embed/Ada4gU-iL3M">
   <p>[1] Stomakhin, Alexey, et al. "A material point method for snow simulation." ACM Transactions on Graphics (TOG) 32.4 (2013): 1-10. </p>
   
   <p>[2] Hu, Yuanming, et al. "Taichi: a language for high-performance computation on spatially sparse data structures." ACM Transactions on Graphics (TOG) 38.6 (2019): 1-16.
+  </p>
+  <p>[3] Yuanming Hu†, Yu Fang†, Ziheng Ge†, Ziyin Qu, Yixin Zhu†, Andre Pradhana, and Chenfanfu Jiang. 2018. A Moving Least Squares Material Point Method with Displacement Discontinuity and Two-Way Rigid Body Coupling. ACM Trans. Graph. 37, 4, Article 150 (August 2018), 14 pages. https://doi.org/10.1145/3197517.3201293
   </p>
 </div>
 
@@ -312,9 +342,9 @@ src="https://www.youtube.com/embed/Ada4gU-iL3M">
         <p>This is a place holder for contribution.</p>
       </div>
       <div class="w3-col l3 m6 w3-margin-bottom">
-        <img src="images/person.png" alt="Mike" style="width:60%">
+        <img src="https://piazza.com/redirect/s3?bucket=uploads&prefix=paste%2Fjwu0uz3r3sy587%2F8e78464c964173f1dc3b994d2385412ee51cb504ce9b9971d7e2d18e2da0adc6%2Fimage.png" alt="Nadeshiko" style="width:60%">
         <h3>Ruomu Xu</h3>
-        <p class="w3-opacity">xuyimo at berkeley</p>
+        <p class="w3-opacity">frankxblackburn at berkeley</p>
         <ul>
           <li>Migrated the solver from traditional MPM to MLS-MPM</li>
           <li>Tweaked the critical stretch and critical compression constant to better understand their influence and attempt to get a more realistic simulation</li>
