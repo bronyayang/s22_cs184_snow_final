@@ -160,7 +160,7 @@ type="text/javascript"></script>
   </table>
 </div>
 
-<p>For the next step, we calculate the hardening coefficient h, indicating how hard/compressed is the snow. The compressed effect is shown in Figure 4.</p>
+<p>For the next step, we calculate the hardening coefficient h, indicating how hard/compressed is the snow.</p>
 
 <p align="middle"><pre align="middle">h = ti.exp( k * (1.0 - Jp[p]))</pre></p>
 
@@ -200,7 +200,7 @@ type="text/javascript"></script>
   </table>
 </div>
 
-<p>Then, we bound the first 2 singular value of F to ensure plasticity. Specifically, we first do SVD on F.</p>
+<p>Then, we bound the first 2 singular value of F to ensure plasticity. Their effects are shown in Figure 4. Specifically, we first do SVD on F.</p>
 
 <p align="middle"><pre align="middle">U, sig, V = ti.svd(F[p])</pre></p>
 
