@@ -15,6 +15,7 @@
     <!-- Float links to the right. Hide them on small screens -->
     <div class="w3-right w3-hide-small">
       <a href="#abs" class="w3-bar-item w3-button">Abstract</a>
+      <a href="#exp" class="w3-bar-item w3-button">Experience</a>
       <a href="#tech" class="w3-bar-item w3-button">Tech</a>
       <a href="#reflection" class="w3-bar-item w3-button">Reflection</a>
       <a href="#results" class="w3-bar-item w3-button">Results</a>
@@ -41,144 +42,217 @@
     <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Abstract</h3>
 
 
-  <p>Snow simulation has been a challenging task in the field of computer graphics. Due to its special properties involving both solid snow and water, rendered results from
-      the existing methods still contains visual artifacts. For example, as shown in Figure 1, the compression of snow on the road is largly ignored by the algorithm.
-      In this project, we implement material point method (MPM) [1] for snow simulation using taichi programming language [2]. Besides reimplement the snow simulation algorithm,
-      we show that the snow compression issue during object interactions can be allivated.
+  <p>Snow simulation has been a challenging task in the field of computer graphics, since the properties of snow involve both 
+    solid and fluid. Existing methods of snow simulation usually implement material point method (MPM) [1] on a specific engine, such as 
+    Unity. In this project, we adopt a novel and productive language Taichi [2] designed for physical simulation and implement
+    moving-least-square MPM to simulate realistic snow particles in 2D and 3D. In the following sections, we describe experience and brief
+    tutorial for using Taichi to simulate snow, as well as introduce comprehensive technical approach.
   </p>
-  <div align="center">
-    <table style="width=100%">
-        <tr>
-            <td align="middle">
-                <img src="images/snowplow.png" width="500px" />
-                <figcaption align="middle">Figure 1. There is no snow on the road which is not realistic.</figcaption>
-        </tr>
-    </table>
 </div>
+
+  <!-- Experience Section -->
+  <div class="w3-container w3-padding-32" id="exp">
+    <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Experience</h3>
+    <p>In this section, we describe the reasons to use and experience using the Taichi language. </p>
+
+    <p>From the planning phase of our project, we have identified a number of potential issues that need to be taken care of, some significant ones include:</p>
+
+    <ol>
+      <li>Given the tight timeline, we very likely won’t have much time after fulling digesting the algorithm, and it would be desirable not to spend most of the time dealing with the rendering pipeline. As our project focuses on physical simulation instead of rendering, it would be ideal for us to use a library that could render proof-of-concept clips.</li>
+      <li>MPM involves intense calculation as millions of particles are involved in the simulation. We wish to efficiently render both proofs-of-concept and final results if we successfully made them, so CPU rendering is likely a no-go. However, all four of us are using different platforms: Ruomu is using WSL2 with an Nvidia GPU, Bronya is using Windows with an AMD GPU, Yijun is using Linux with an Nvidia GPU, and Qianxin is using an M1 Mac. To collaborate, we would have to implement pipelines for CUDA, Vulkan and Metal on all 3 OS, which is unrealistic. Some mathematics-related capabilities would be a plus, as we also need functionalities like pRNG and SVD computation. Thus, we decide to use a library with GPU acceleration and mathematical computation capabilities.</li>
+      <li>As help available will be limited to us, it’s desirable that we use a platform with a considerable amount of community assistance, constantly updating, and have example codes for us to reference.</li>
+    </ol>
+
+    <p>Initially, we decided to use Unity to accomplish 1 and some other libraries to accomplish 2. Nevertheless, we then discovered that it would still take a significant amount of work to let Unity render correctly; moreover, we will need to spend a considerable amount of time writing code to use certain libraries in Unity.</p>
+
+    <p>During our exploration of what libraries to use, we discovered the Taichi language. It is a Domain Specific Language (DSL) built around python for numerical computation and graphics developed by Dr. Hu Yuanming. We decided to experiment with it, and the outcome was awesome. I will discuss pros and cons of using Taichi lang below.</p>
+
+    <p>Advantages:</p>
+
+    <ol>
+      <li>
+        Taichi includes a simple GUI which supports both 2D and 3D that works. In fact, due to the time constraints, the demos we rendered for the final report used that GUI due to its simplicity and completeness: with about two lines of code, we can see our rendering results in real-time, and there isn’t much to add to demonstrate the result of physical stimulation (it indeed doesn’t look like snow – but that’s more on the rendering side of the problem which we decide to touch less upon; meanwhile it does act like snow).
+      </li>
+      <li>
+        Taichi is cross-platform, supports GPUs with different APIs (including CUDA, Vulkan, Metal), and compiles its python-esque code into C++ before execution. Thus, we can easily utilise GPUs on different platforms without worrying about compatibility. Also, unlike numpy where only vectorised operations are computed rapidly, we can write python loops, and taichi compiler will handle optimisation for us automatically. Also, Taichi has built-in mathematical libraries which we need.
+      </li>
+      <li>Most of our debugging and visualisation are done in 2D space because it is easier for us to accurately identify what is happening and because it is quicker for us to conduct physical simulations in 2D. However, the MPM algorithm does not have dimension-specific calculations. Luckily, Taichi supports template metaprogramming. After implementing MPM in 2D, we rendered the 3D proof-of-concept demo by simply changing the coordinates of particles and walls to 3D and switching to the 3D GUI. Should we do the same thing in C++, we would have to either refactor the code for 3D simulation or do extensive template gymnastics: both being extremely time-consuming and lowers our quality of life.</li>
+   <li>As Taichi supports vectorisation like numpy, our resulting code is very compact. This significantly reduced debug complexity.</li>
+   <li>Dr. Hu Yuanming initially developed Taichi (a C++ library) partly to demonstrate his SIGGRAPH 2018 paper in an elegant way. Therefore, we do not need to worry about feasibility when doing this project with Taichi. While this fact did not help us at all technologically, it assisted us psychologically as we know it’s a suitable tool for snow simulation.</li>
+  <li>Finally, we discovered that there used to be Blender plugins that integrate Taichi with blender. If we were to go beyond our plan and make realistic simulations, we can do physical simulations in Taichi and actual rendering in blender with the plugin.</li>
+  </ol>
+  
+<p>Of course, this is not to say that Taichi is perfect, and I will name some disadvantages below.</p>
+
+<ol>
+  <li>While built around python, Taichi is still a language itself, and it clearly distinguishes itself (officially named “Taichi Scope”: those with @ti.kernel) from python (“Python Scope”). Thus, we are limited to using only those functions which Taichi support. For example, I cannot use numpy’s multivariate normal distribution pRNG helpful in generating snowballs in Taichi, and Taichi only supports univariate normal distribution. We can easily write a multivariate gaussian pRNG with EE126 knowledge, but we think it’s not a good idea to reinvent wheels. This is one reason why our demo only involves snow blocks.</li>
+<li>Taichi compiles Taichi/Python code into C++ and machine code like mentioned in the advantages section, and it is beneficial in terms of efficiency. However, it is not beneficial in terms of debugging. Taichi does the first compilation reading the AST after Python parses our code, and I suppose for this reason, the error information is extremely unhelpful: we were only able to know “something around line 123 went wrong” with absolutely no idea on where exactly is the issue, why Taichi compiler doesn’t like such AST and what is expected. Furthermore, if Taichi produces LLVM error (which is extremely rare), we are faced with an extremely long error log with absolutely no reference to the original code, making it impossible for newcomers like us to debug.</li>
+<li>Taichi is a library that is still being actively developed, and therefore changes happen quite often, and they bring cool changes to Taichi; nevertheless, we found backwards compatibility is not one of the contributors’ main goals. While trying the Taichi-blender integration plugin (released in late 2020), we found that because we are 2 major versions ahead, Taichi APIs are changed drastically, and the plugin can’t be run without significant refactoring.</li>
+</ol>
+
+
 </div>
 
   <!-- Tech Section -->
   <div class="w3-container w3-padding-32" id="tech">
     <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Technical Approach</h3>
 
+    <p>We first initialize desired number of particles. For each particles, we initialize position as x, velocity as v, deformation gradient as F, and affine velocity field as C.
+      Deformation gradient [explain term mentioned]. For initial state, x can be random position, and v has to be 0 vector. Deformation gradient should be identity matrix, and C should be zero matrix.
+      If the initail parameters is not set as mentioned. The particles will not fall down like snow and will jump restlessly. For 2D simulation, x and v are 2 elements ti.Vector. F and C are 2x2 ti.Matrix. 
+      For 3D simulation, we simply change 2D vectors to 3D and 2x2 matrices to 3x3. The below images show the one of the possible initial positions and states for simulation.
+    </p>
+
+    <div align="center">
+      <table style="width=100%">
+          <tr>
+              <td align="middle">
+                  <img src="images/figure2.png" width="400px" />
+                  <figcaption align="middle">Figure 1. 2D snow particles initial positions.</figcaption>
+          </tr>
+      </table>
+  </div>
+
+  <div align="center">
+    <table style="width=100%">
+        <tr>
+            <td align="middle">
+                <img src="images/figure2_3d.png" width="400px" />
+                <figcaption align="middle">Figure 2. 3D snow particles initial positions.</figcaption>
+        </tr>
+    </table>
+</div>
+
+<p>Before we start updating particles, we need to set up the environment. We set particles color to 0xEEEEF0 which is white. We can also change the color to any color.
+  Then, we set the gravity to [0, -10] for 2D simulation and [0, -10, 0] for 3D simulation. Simulation step is set to an integer. We found that step of around 25 is enough to make the snow fall down.
+  If the step is set too large, the particles will start to adjust its position, repealling each other, and become unrealistic in the later steps. The artifacts is shown below.
+</p>
+
+<div align="center">
+  <table style="width=100%">
+      <tr>
+          <td align="middle">
+              <img src="images/problem1.png" width="400px" />
+              <figcaption align="middle">Figure 3. Artifacts when setting simulation step too large.</figcaption>
+      </tr>
+  </table>
+</div>
+
+<p>Next, for each simulation step, we update the particles state. The particles should first change to gird space. Specifically,
+  there are number of grid * number of grid places that particles can be in, and number of grid * number of grid * number of grid places for 3D. 
+  Number of grid parameter is usually 128. Grid space is convenient for tracking deformation gradient, velocity, mass, and position for particle.
+  To change particles to grid space, we first clear the grid at each step. Setting grid velocity to 0 vector and mass clear the grid. 
+</p>
+
+<p>Then, we update deformation gradient F using the change in time dt and affine velocity field C. The update formula is shown below.</p>
+
+
+<div align="center">
+  <table style="width=100%">
+      <tr>
+          <td align="middle">
+              <img src="images/formula1.png" width="250px" />
+              <figcaption align="middle">Formula 1. Deformation gradient update.</figcaption>
+      </tr>
+  </table>
+</div>
+
+<p>For the next step, we calculate the hardening coefficient h, indicating how hard/compressed is the snow. The compressed effect is shown in Figure 4.</p>
+
+<p align="middle"><pre align="middle">h = ti.exp( k * (1.0 - Jp[p]))</pre></p>
+
+<div align="center">
+  <table style="width=100%">
+      <tr>
+          <td align="middle">
+              <img src="images/4_1.png" width="400px" />
+              <figcaption align="middle">Figure 4.1. Large h.</figcaption>
+      </tr>
+  </table>
+</div>
+
+<div align="center">
+  <table style="width=100%">
+      <tr>
+          <td align="middle">
+              <img src="images/4_2.png" width="400px" />
+              <figcaption align="middle">Figure 4.2. Small h.</figcaption>
+      </tr>
+  </table>
+</div>
+
+<p>k is an adjustable hyperparameter, and we set k to 10. Jp is determinant of F. We update lame parameters, lambda and mu, being functions of the plastic deformation gradients. The update 
+  formula is shown below.
+</p>
+
+
+<div align="center">
+  <table style="width=100%">
+      <tr>
+          <td align="middle">
+              <img src="images/formula3.png" width="400px" />
+              <figcaption align="middle">Formula 3. Lame parameters update rule, where the exp part is h.</figcaption>
+      </tr>
+  </table>
+</div>
+
+<p>Then, we bound the first 2 singular value of F to ensure plasticity. Specifically, we first do SVD on F.</p>
+
+<p align="middle"><pre align="middle">U, sig, V = ti.svd(F[p])</pre></p>
+
+<p>Bound first 2 singular value:</p>
+
+<p align="middle"><pre align="middle">sig[d, d] = min(max(sig[d, d], 1 - 2.5e-2), 1 + 4.5e-3) for d = 0, 1</pre></p>
+
+<p>Finally, we reconstruct deformation gradient.</p>
+
+<p align="middle"><pre align="middle">F[p] = U @ sig @ V.transpose()</pre>
+
+<p>After getting the deformation gradien, we calculate stress. We use stress to update particles velocity.</p>
+
+<p align="middle"><pre align="middle">stress = 2 * mu * (F[p] - U @ V.transpose()) @ F[p].transpose() + ti.Matrix.identity(float, 3) * lambda * J * (J - 1)</pre>
+
+<p>Besides stress, We also have to consider other forces like mass for itself, gravity, neighboring particles collision, etc. Therefore, we add stress to the current grid space grid[i, j, k] 
+  as well as adding weighted gravity, looping through the neighboring 3x3 grid to add the effect of these grids. The detailed implementation is shown in our code.
+  We also need to consider "edge" cases: If i, j, k is out of bound, we need to clear the current grid[i, j, k], setting velocity and mass to 0.
+</p>
+
+
+<p>In the end, we convert grid to particles. Specifically, we take the grid velocity, multiply a weight to become the new particle velocity.
+  Using the velocity, we also update the position. Position update rule is shown below.
+</p>
+
+<div align="center">
+  <table style="width=100%">
+      <tr>
+          <td align="middle">
+              <img src="images/formula2_1.png" width="210px" />
+              <figcaption align="middle">Formula 3. Particle position update rule.</figcaption>
+      </tr>
+  </table>
+</div>
+
 </div>
 
     <!-- Reflection Section -->
     <div class="w3-container w3-padding-32" id="reflection">
       <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Reflection</h3>
-      <p>For the milestone, we familiar with taichi language. We also implement the 2D snow simulation based on MPM. 
-          In the simulation, the individual particles are able to fall off snow-like.</p>
-      <p>Before we move on to the 3D simulation of snow, we need to solve several problems. 
-          Although we take in account of elastic and plasticity of snow, we are treating snow particles visually quite similar as sand particles.
-      No matter how hard is the snowball, it should always break apart when hitting the wall/ground. However, the above videos do not show the desired behavior.</p>
-          <p>The second problem is that in the second video, the snowballs should stick to the wall and then slide down. However, the snowballs hit the wall and then bounce back to the ground.</p>
-          <p>Also, the current simulation has problem of repulsive particles. Specifically, when all the particles fall on the ground, they will start to repell each other, making them spaced evenly in the end and change the overall shape of the snow on the land.
-              Figure 4 shows the described problem.
-          </p>
 
-          <div align="center">
-              <table style="width=100%">
-                  <tr>
-                      <td align="middle">
-                          <img src="images/problem1.png" width="500px" />
-                          <figcaption align="middle">Figure 4. Limitation of the current stage.</figcaption>
-                  </tr>
-              </table>
-          </div>
+      <p>In this section, we describe the problems encountered and solution.</p>
+
     </div>
 
-    <p>We are planning on solving these problems in the following days.</p>
 
 
   <!-- Results Section -->
   <div class="w3-container w3-padding-32" id="results">
     <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Results</h3>
-    <p>In this Section, we mainly report our current progress and results. Since we aim for reimplementing a comprehensive snow simulation which includes 2D and 3D snow simulation, we first takle the 2D problem.</p>
 
-    <p>In the begining of the simulation, we initalize the position of particles to form the desired shape. For example, we create 3 squares in different position as in Figure 2. We then initialize particle velocity to 0, deformation gradient to 2D identity matrix, plastic deformation to 1, affine velocity field to 0 matrix.</p>
-    <div align="center">
-        <table style="width=100%">
-            <tr>
-                <td align="middle">
-                    <img src="images/figure2.png" width="500px" />
-                    <figcaption align="middle">Figure 2. Snow particles initial positions.</figcaption>
-            </tr>
-        </table>
-    </div>
+    <p>The following videos showcase our 2D snow simulation with different shape of snow, forces applied to the snow, and different stiffness of the snow.</p>
 
-    <p>For each of the 20000 frames, we repeat the following steps:</p>
-
-    <ol type="1">
-        <li>Update deformation gradient(F) according to Formula 1.</li>
-        <li>Reconstruct deformation gradient to take account of plasticity of snow.</li>
-        <li>Particles to grid conversion.</li>
-        <li>Use Euler method to calculate acceleration and velocity for each particles. For velocity, momentum and gravity are considered.</li>
-        <li>Grid to particles conversion.</li>
-        <li>Update velocity and position for each particle according to Formula 2.</li>
-      </ol>
-
-      <div align="center">
-        <table style="width=100%">
-            <tr>
-                <td align="middle">
-                    <img src="images/formula1.png" width="200px" />
-                    <figcaption align="middle">Formula 1. Deformation gradient update.</figcaption>
-            </tr>
-        </table>
-    </div>
-
-    <div align="center">
-        <table style="width=100%">
-            <tr>
-                <td align="middle">
-                    <img src="images/formula2.png" width="250px" />
-            </tr>
-        </table>
-    </div>
-    <div align="center">
-        <table style="width=100%">
-            <tr>
-                <td align="middle">
-                    <img src="images/formula2_1.png" width="190px" />
-                    <figcaption align="middle">Formula 2. Velocity and position update rule.</figcaption>
-            </tr>
-        </table>
-    </div>
-
-
-    <p>After the following progress, we get the following simulation:</p>
-
-    <div align="center">
-        <table style="width=100%">
-            <tr>
-                <td align="middle">
-                    <img src="images/show1.png" width="500px" />
-            </tr>
-        </table>
-    </div>
-    <div align="center">
-        <table style="width=100%">
-            <tr>
-                <td align="middle">
-                    <img src="images/show2.png" width="500px" />
-            </tr>
-        </table>
-    </div>
-    <div align="center">
-        <table style="width=100%">
-            <tr>
-                <td align="middle">
-                    <img src="images/show3.png" width="500px" />
-                    <figcaption align="middle">Figure 3. Snow simulation.</figcaption>
-            </tr>
-        </table>
-    </div>
-
-    <p>The following videos show case our 2D snow simulation with different shape of snow, forces applied to the snow, and different stiffness of the snow.</p>
-
-    <p>The first video is two snow balls hitting on each other. The constructed shapes are two circles instead of squares in the example above.
-        We also increase the hardening coefficient to simulate that snow gets harder when compressed.
-        Therefore when two balls collapse, the snow particles are relatively stuck together compared to the above example in which we did not increase the hardening coefficients. Notice that the particles from one ball will stick to another ball, due to the stickiness property of the snow.
+    <p>The first video is two snow balls hitting on each other. The constructed shapes are two circles.
+        We increase the hardening coefficient to simulate that snow gets harder when compressed.
+        Therefore, when two balls collapse, the snow particles are relatively stuck together. Notice that the particles from one ball will stick to another ball, due to the stickiness property of the snow.
          </p>
     <div align="center">
     <video width="640" height="480" controls>
@@ -186,17 +260,6 @@
       </video>
     </div>
 
-    <p>The hardening coefficient is the force between snow particles. If we increase the force the particles will be closer and then become stiffer visually. The formula for the hardening coefficient is shown below:</p>
-
-    <div align="center">
-        <table style="width=100%">
-            <tr>
-                <td align="middle">
-                    <img src="images/formula3.png" width="400px" />
-                    <figcaption align="middle">Formula 3.</figcaption>
-            </tr>
-        </table>
-    </div>
 
 <p> For the second video, it shows three snowballs hitting the wall. We apply three equally horizontal forces to each of them. The top small ball has the smallest hardening coefficient and the coefficient increase for the two snowballs below. Therefore the top snowball breaks up more compared to the two below.</p>
     <div align="center">
@@ -221,7 +284,7 @@ src="https://www.youtube.com/embed/Ada4gU-iL3M">
 </div>
   </div>
 
-
+  
 <!-- Reference -->
   <div class="w3-container w3-padding-32" id="ref">
     <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">References</h3>
@@ -252,17 +315,24 @@ src="https://www.youtube.com/embed/Ada4gU-iL3M">
         <img src="images/person.png" alt="Mike" style="width:60%">
         <h3>Ruomu Xu</h3>
         <p class="w3-opacity">xuyimo at berkeley</p>
-        <p>This is a place holder for contribution.</p>
+        <ul>
+          <li>Migrated the solver from traditional MPM to MLS-MPM</li>
+          <li>Tweaked the critical stretch and critical compression constant to better understand their influence and attempt to get a more realistic simulation</li>
+          <li>Wrote simulation for sticky and frictional walls and rigid objects</li>
+        </ul>
       </div>
       <div class="w3-col l3 m6 w3-margin-bottom">
         <img src="images/person.png" alt="Dan" style="width:60%">
         <h3>Shijia Yang</h3>
         <p class="w3-opacity">shijiayang at berkeley</p>
-        <p>This is a place holder for contribution.</p>
+        <ul>
+          <li>Created particles rendering framework, such as gui display, gravity, and initial particle distribution, velocity using Taichi</li>
+          <li>Wrote basic MPM snow simulation in 2D and then migrate to 3D space</li>
+          <li>Wrote majority of milestone and final report</li>
+        </ul>
       </div>
   </div>
-  
-
+<!-- End page content -->
 </div>
 
 
