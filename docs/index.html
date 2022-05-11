@@ -53,6 +53,15 @@ type="text/javascript"></script>
   </p>
 </div>
 
+<div class="w3-container w3-padding-32" id="abs">
+  <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Setup</h3>
+
+
+<p>The only library we used in our project is Taichi 1.0.1 with Python 3.9 or 3.10. Installiation takes relatively short amount of time as Taichi installiation is very smoothly integrated with pip. For more details please consult <a href="https://docs.taichi-lang.org/">here</a>.
+</p>
+</div>
+
+
   <!-- Experience Section -->
   <div class="w3-container w3-padding-32" id="exp">
     <h3 class="w3-border-bottom w3-border-light-grey w3-padding-16">Experience</h3>
@@ -160,7 +169,7 @@ type="text/javascript"></script>
   </table>
 </div>
 
-<p>For the next step, we calculate the hardening coefficient h, indicating how hard/compressed is the snow. The compressed effect is shown in Figure 4.</p>
+<p>For the next step, we calculate the hardening coefficient h, indicating how hard/compressed is the snow.</p>
 
 <p align="middle"><pre align="middle">h = ti.exp( k * (1.0 - Jp[p]))</pre></p>
 
@@ -200,7 +209,7 @@ type="text/javascript"></script>
   </table>
 </div>
 
-<p>Then, we bound the first 2 singular value of F to ensure plasticity. Specifically, we first do SVD on F.</p>
+<p>Then, we bound the first 2 singular value of F to ensure plasticity. Their effects are shown in Figure 4. Specifically, we first do SVD on F.</p>
 
 <p align="middle"><pre align="middle">U, sig, V = ti.svd(F[p])</pre></p>
 
@@ -380,7 +389,10 @@ src="https://www.youtube.com/embed/Ada4gU-iL3M">
         <img src="images/person.png" alt="Jane" style="width:60%">
         <h3>Yijun Li</h3>
         <p class="w3-opacity">liyijun at berkeley</p>
-        <p>This is a place holder for contribution.</p>
+        <ul>
+          <li>Instructed Unity environment setup and identified using Unity is a low-feasibility plan.</li>
+          <li>Attempted to let Blender render snow realisticly and integrade our MPM solver into Blender as a plugin.</li>
+        </ul>
       </div>
       <div class="w3-col l3 m6 w3-margin-bottom">
         <img src="https://piazza.com/redirect/s3?bucket=uploads&prefix=paste%2Fjwu0uz3r3sy587%2F8e78464c964173f1dc3b994d2385412ee51cb504ce9b9971d7e2d18e2da0adc6%2Fimage.png" alt="Nadeshiko" style="width:60%">
