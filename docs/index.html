@@ -102,6 +102,8 @@ type="text/javascript"></script>
 <li>Taichi is a library that is still being actively developed, and therefore changes happen quite often, and they bring cool changes to Taichi; nevertheless, we found backwards compatibility is not one of the contributors’ main goals. While trying the Taichi-blender integration plugin (released in late 2020), we found that because we are 2 major versions ahead, Taichi APIs are changed drastically, and the plugin can’t be run without significant refactoring.</li>
 </ol>
 
+We also attempted to integrate Taichi with Blender but ended up poorly. The plugin architecture provided by blender can be cryptic at times (or it might be because we don't have equivalent experience in developing plugins), so at first we settled for a scripted demo driven by Taichi and its computing engine (that provides material point output) and bind particle data with blender, so that we can bypass its built-in particle simulation and use it as a render viewport solely (preferably using the real-time EEVEE viewport for interactive high quality render output). Using a universal 3D graphics platform such as blender does give us the beneficial of a quite functional python API that allowed us to interact with various basic functionality in script; however, despite the ease of use of python interface, the performance penalty proves to be too high for a usable demo, so this exploration is eventually abandoned. 
+
 
 </div>
 
